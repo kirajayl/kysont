@@ -109,6 +109,38 @@ footer{margin:70px 24px 40px;padding-top:20px;border-top:1px solid var(--line);f
 @keyframes rip{to{transform:scale(2.4);opacity:0}}
 .rv{opacity:0;transform:translateY(24px);transition:opacity .9s,transform .9s}.rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.scan,.save:before,.live,.caret{animation:none}.rv{opacity:1;transform:none}.ph img{transform:none}}
+/* ---- tablet 768-1023: wider single column ---- */
+@media (min-width:768px) and (max-width:1023px){
+ .wrap{max-width:680px}
+ .top{padding:22px 24px 0}
+ .intro,.pad,.plain{padding-left:32px;padding-right:32px}
+ h1{font-size:72px}
+ .grid{grid-template-columns:repeat(3,1fr)}
+ .grid .btn:last-child:nth-child(odd){grid-column:auto}
+ .grid .btn:last-child:nth-child(3n+1){grid-column:span 3}
+ .stats{grid-template-columns:repeat(4,1fr)}.stats b{font-size:40px}
+ .ph{aspect-ratio:3/2}
+ footer{margin-left:32px;margin-right:32px}
+}
+/* ---- PC 1024+: photo fixed on the left, content scrolls on the right ---- */
+@media (min-width:1024px){
+ .wrap{max-width:none}
+ .hero{position:fixed;top:0;left:0;width:50vw;height:100vh;aspect-ratio:auto}
+ .hero:after{height:22%}
+ .word{font-size:min(9vw,140px)}
+ .top{position:fixed;left:50vw;right:0;padding:24px 6vw 18px;background:linear-gradient(var(--bg) 60%,transparent)}
+ .wrap>.intro,.wrap>.sec,.wrap>.plain,.wrap>footer{margin-left:calc(50vw + 6vw);margin-right:6vw;max-width:620px}
+ .wrap>.intro{margin-top:0;padding:16vh 0 0}
+ .pad,.plain{padding-left:0;padding-right:0}
+ h1{font-size:84px}
+ .tag{font-size:30px}
+ .grid{grid-template-columns:repeat(3,1fr)}
+ .grid .btn:last-child:nth-child(odd){grid-column:auto}
+ .grid .btn:last-child:nth-child(3n+1){grid-column:span 3}
+ .stats{grid-template-columns:repeat(4,1fr)}.stats b{font-size:40px}
+ .ph{aspect-ratio:16/10}
+ .toast{left:75vw}
+}
 </style></head>
 <body class="en">
 <div class="wrap">
