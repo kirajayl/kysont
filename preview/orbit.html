@@ -150,12 +150,13 @@ gsap.utils.toArray('.jy').forEach(el=>gsap.from(el,{y:50,opacity:0,duration:1,ea
 // cards fly in from alternating sides with a 3D flip, and flip out the other way when they leave the top (Kyson 11-25)
 gsap.utils.toArray('.grid,.stories,.svl').forEach(g=>gsap.set(g,{perspective:1400}));
 gsap.utils.toArray('.gl,.sv').forEach((el,i)=>{const d=i%2?1:-1;
-  if(REDUCE){gsap.from(el,{opacity:0,duration:.6,scrollTrigger:{trigger:el,start:'top 90%'}});return}
+  // reduced-motion phones still get a softer slide (no 3D spin) so the page never looks static
+  const k=REDUCE?.45:1;
   gsap.set(el,{transformOrigin:(d<0?'left':'right')+' center'});
-  gsap.fromTo(el,{xPercent:d*55,rotateY:-d*62,rotateZ:d*3,scale:.86,opacity:0},{xPercent:0,rotateY:0,rotateZ:0,scale:1,opacity:1,ease:'power2.out',
-    scrollTrigger:{trigger:el,start:'top 98%',end:'top 62%',scrub:.6}});
-  gsap.to(el,{xPercent:-d*35,rotateY:d*48,scale:.9,opacity:0,ease:'power2.in',immediateRender:false,
-    scrollTrigger:{trigger:el,start:'bottom 22%',end:'bottom -4%',scrub:.6}});});
+  gsap.fromTo(el,{xPercent:d*70*k,rotateY:-d*70*k*(REDUCE?0:1),rotateZ:d*4*k,scale:1-.18*k,opacity:0},{xPercent:0,rotateY:0,rotateZ:0,scale:1,opacity:1,ease:'power2.out',
+    scrollTrigger:{trigger:el,start:'top 100%',end:'top 45%',scrub:.4}});
+  gsap.to(el,{xPercent:-d*45*k,rotateY:d*55*k*(REDUCE?0:1),scale:1-.12*k,opacity:0,ease:'power2.in',immediateRender:false,
+    scrollTrigger:{trigger:el,start:'bottom 30%',end:'bottom -2%',scrub:.4}});});
 window.__scrollP=0;ScrollTrigger.create({start:0,end:'max',onUpdate:s=>window.__scrollP=s.progress});
 
 const dock=document.getElementById('dock');
