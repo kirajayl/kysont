@@ -28,8 +28,8 @@
 .hint{position:absolute;right:6vw;bottom:3svh;font:11px 'JetBrains Mono',monospace;letter-spacing:.3em;color:var(--mu);z-index:3}
 .hint::after{content:"";display:block;width:1px;height:28px;background:var(--mu);margin:8px auto 0;animation:drip 1.6s cubic-bezier(.16,1,.3,1) infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-.mani{padding:22svh 6vw 14svh}.mani p{font-weight:900;font-size:clamp(44px,11vw,150px);line-height:1;letter-spacing:-.02em}
-.mani p em{font-style:normal;color:var(--ac)}.mani .ln>span{transform:translateY(105%)}
+.mani{padding:12svh 6vw 10svh}.mani p{font-weight:900;font-size:clamp(44px,11vw,150px);line-height:1;letter-spacing:-.02em}
+.mani p em{font-style:normal;color:var(--ac)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #ffffff1c;margin:0 6vw}
 .st{padding:34px 0 40px;border-bottom:1px solid #ffffff1c}.st b{display:block;font-family:'Archivo';font-stretch:125%;font-weight:900;font-size:clamp(46px,7vw,110px);line-height:1}
 .st i{font-style:normal;color:var(--mu);font-size:14px}
@@ -115,7 +115,7 @@ const px=gsap.quickTo('#pimg','x',{duration:.8,ease:'power3'}),py=gsap.quickTo('
 function par(x,y){px((x/innerWidth-.5)*-30);py((y/innerHeight-.5)*-30)}
 addEventListener('pointermove',e=>par(e.clientX,e.clientY));addEventListener('touchmove',e=>{const t=e.touches[0];par(t.clientX,t.clientY)},{passive:true});
 // manifesto line reveals
-gsap.to('.mani .ln>span',{yPercent:0,duration:1.2,ease:EXPO,stagger:.12,scrollTrigger:{trigger:'.mani',start:'top 70%'}});
+gsap.from('.mani .ln>span',{yPercent:110,duration:1.2,ease:EXPO,stagger:.12,scrollTrigger:{trigger:'.mani',start:'top 70%'}});
 // stats stagger
 gsap.from('.st',{y:60,opacity:0,duration:1,ease:EXPO,stagger:.08,scrollTrigger:{trigger:'.stats',start:'top 80%'}});
 // pinned horizontal track with velocity skew

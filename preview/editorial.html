@@ -24,21 +24,23 @@
 .arch{width:clamp(180px,26vw,380px);aspect-ratio:3/4.2;border-radius:999px 999px 6px 6px;overflow:hidden;position:relative;z-index:2;align-self:center}
 .arch img{width:100%;height:118%;object-fit:cover;object-position:50% 15%}
 .tr{position:absolute;left:0;top:0;width:clamp(120px,15vw,200px);aspect-ratio:3/4;object-fit:cover;pointer-events:none;z-index:1;border-radius:4px;will-change:transform,opacity}
-.mq{border-block:1px solid var(--line);padding:2.4svh 0;overflow:hidden;white-space:nowrap}
-.mq div{display:inline-block;font-family:'Instrument Serif','Noto Serif SC',serif;font-style:italic;font-size:clamp(48px,9vw,130px);line-height:1;will-change:transform}
-.mq b{font-weight:400;color:var(--ac);font-style:normal;padding:0 .3em}
+.say{padding:18svh 6vw 6svh;max-width:1200px}.say p{font-family:'Instrument Serif','Noto Serif SC',serif;font-size:clamp(34px,5.4vw,84px);line-height:1.12}
+.say .c{color:#16130f26;transition:color .25s}.say .c.on{color:var(--fg)}.say .c.ac.on{color:var(--ac)}
+.cur{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--ac);pointer-events:none;z-index:40;display:grid;place-items:center;color:var(--bg);font-size:11px;letter-spacing:.15em;transition:width .45s cubic-bezier(.16,1,.3,1),height .45s cubic-bezier(.16,1,.3,1),margin .45s cubic-bezier(.16,1,.3,1)}
+.cur span{opacity:0;transition:opacity .2s}.cur.big{width:84px;height:84px;margin:-42px 0 0 -42px}.cur.big span{opacity:1}
+@media (hover:none),(pointer:coarse){.cur{display:none}}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);padding:14svh 6vw}
 .st{border-left:1px solid var(--line);padding:0 20px}.st b{display:block;font-family:'Instrument Serif','Noto Serif SC',serif;font-weight:400;font-size:clamp(64px,8vw,120px);line-height:1}
 .st i{font-style:normal;color:var(--mu);font-size:14px}
 .sec-h{font-family:'Instrument Serif','Noto Serif SC',serif;font-weight:400;font-size:clamp(52px,9vw,140px);line-height:.9;padding:0 6vw 5svh}.sec-h em{color:var(--ac)}
 .rows{list-style:none;border-top:1px solid var(--line);margin:0 6vw}
-.row{display:grid;grid-template-columns:70px 1fr;gap:20px;padding:30px 0;border-bottom:1px solid var(--line);position:relative;cursor:pointer;transition:padding .6s cubic-bezier(.16,1,.3,1)}
+.row{display:grid;grid-template-columns:70px 1fr 220px;align-items:center;gap:20px;overflow:hidden;z-index:0;padding:30px 0;border-bottom:1px solid var(--line);position:relative;cursor:pointer;transition:padding .6s cubic-bezier(.16,1,.3,1)}
 .row h3{font-family:'Instrument Serif','Noto Serif SC',serif;font-weight:400;font-size:clamp(34px,4.6vw,64px);line-height:1;transition:transform .6s cubic-bezier(.16,1,.3,1),color .3s}
 .row p{color:var(--mu);margin-top:8px}.rn{font-size:13px;color:var(--mu);padding-top:12px}
 .row:hover h3{transform:translateX(18px);color:var(--ac)}
-.rimg{display:none}
-.float{position:fixed;left:0;top:0;width:280px;aspect-ratio:4/3;object-fit:cover;pointer-events:none;z-index:20;border-radius:4px;opacity:0;transform:translate(-50%,-50%) scale(.6)}
-.row.open .rimg{display:block;grid-column:2;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:4px;margin-top:14px}
+.rimg{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:4px;clip-path:inset(50% 0 50% 0);transition:clip-path .7s cubic-bezier(.16,1,.3,1)}
+.row:hover .rimg{clip-path:inset(0 0 0 0)}
+.row::before{content:"";position:absolute;inset:0;background:#16130f0a;transform:scaleY(0);transform-origin:bottom;transition:transform .6s cubic-bezier(.16,1,.3,1);z-index:-1}.row:hover::before{transform:scaleY(1)}
 .stack{padding:6svh 6vw 10svh}
 .sc{position:sticky;top:calc(10svh + var(--i)*22px);height:78svh;margin-bottom:8svh}
 .sc-in{height:100%;background:var(--fg);color:var(--bg);border-radius:10px;overflow:hidden;display:grid;grid-template-columns:1fr 1.1fr;will-change:transform}
@@ -55,15 +57,15 @@
 .cta{display:inline-flex;margin-top:8svh;padding:20px 40px;border-radius:999px;background:var(--fg);color:var(--bg);text-decoration:none;font-weight:700;font-size:17px}
 footer{padding:5svh 6vw;display:flex;justify-content:space-between;font-size:12px;color:var(--mu);border-top:1px solid var(--line)}
 @media (max-width:760px){.hero{grid-template-columns:1fr;padding-top:10svh}.arch{position:absolute;right:6vw;top:16svh;width:44vw;opacity:1}
- .hero h1{margin-top:28svh}.stats{grid-template-columns:1fr 1fr;row-gap:40px}.row{grid-template-columns:40px 1fr}
+ .hero h1{margin-top:28svh}.stats{grid-template-columns:1fr 1fr;row-gap:40px}.row{grid-template-columns:40px 1fr}.rimg{display:none;clip-path:none}.row.open .rimg{display:block;grid-column:2}
  .sc-in{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sc{height:74svh}.sc-tx{padding:4svh 6vw 2svh}.sc-tx span{font-size:64px}}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}</style></head><body><div class="pre" id="pre"><span id="pren">0</span></div>
 <header class="hero" id="hero"><div class="k">Co-Founder · 1% AI Labs</div>
  <div><h1><span class="ln"><span>Kysont</span></span><span class="ln"><span><em>Tan.</em></span></span></h1><p class="tag">18 年，把新科技变成真生意。<br>18 years turning new technology into real business.</p></div>
  <div class="arch" id="arch"><img src="assets/hero.webp" alt="Kysont Tan"></div></header>
-<div class="mq"><div id="mq"><span>AI Systems</span><b>✦</b><span>AI Video</span><b>✦</b><span>Automation</span><b>✦</b><span>Training</span><b>✦</b><span>18 Years</span><b>✦</b><span>AI Systems</span><b>✦</b><span>AI Video</span><b>✦</b><span>Automation</span><b>✦</b><span>Training</span><b>✦</b><span>18 Years</span><b>✦</b><span>AI Systems</span><b>✦</b><span>AI Video</span><b>✦</b><span>Automation</span><b>✦</b><span>Training</span><b>✦</b><span>18 Years</span><b>✦</b><span>AI Systems</span><b>✦</b><span>AI Video</span><b>✦</b><span>Automation</span><b>✦</b><span>Training</span><b>✦</b><span>18 Years</span><b>✦</b></div></div>
+<section class="say"><p id="say"><span class="c">1</span><span class="c">8</span><span class="c"> </span><span class="c">年</span><span class="c">，</span><span class="c">科</span><span class="c">技</span><span class="c"> </span><span class="c">·</span><span class="c"> </span><span class="c">销</span><span class="c">售</span><span class="c"> </span><span class="c">·</span><span class="c"> </span><span class="c">金</span><span class="c">融</span><span class="c">。</span><span class="c ac">1</span><span class="c ac">4</span><span class="c ac"> </span><span class="c ac">家</span><span class="c ac">公</span><span class="c ac">司</span><span class="c">在</span><span class="c">用</span><span class="c">我</span><span class="c">们</span><span class="c">的</span><span class="c">系</span><span class="c">统</span><span class="c">，</span><span class="c ac">1</span><span class="c ac">,</span><span class="c ac">0</span><span class="c ac">0</span><span class="c ac">0</span><span class="c ac">+</span><span class="c ac"> </span><span class="c ac">位</span><span class="c ac">学</span><span class="c ac">员</span><span class="c">跟</span><span class="c">我</span><span class="c">学</span><span class="c"> </span><span class="c">A</span><span class="c">I</span><span class="c">。</span><span class="c">我</span><span class="c">只</span><span class="c">做</span><span class="c">一</span><span class="c">件</span><span class="c">事</span><span class="c">：</span><span class="c ac">把</span><span class="c ac">新</span><span class="c ac">科</span><span class="c ac">技</span><span class="c ac">，</span><span class="c ac">变</span><span class="c ac">成</span><span class="c ac">真</span><span class="c ac">生</span><span class="c ac">意</span><span class="c ac">。</span></p></section>
 <div class="stats"><div class="st"><b><span data-count="18">0</span></b><i>年科技 · 销售 · 金融</i></div><div class="st"><b><span data-count="14">0</span></b><i>家公司在用我们的系统</i></div><div class="st"><b><span data-count="1000">0</span>+</b><i>位学员</i></div><div class="st"><b><span data-count="3000">0</span>+</b><i>条 AI 视频</i></div></div>
-<h2 class="sec-h">现在<em>在做</em></h2><ul class="rows"><li class="row" data-img="assets/office.webp"><span class="rn">01</span><div><h3>1% AI Labs</h3><p>联合创始人 · 为中小企业做 AI 系统、AI 视频和自动化。</p></div><img class="rimg" src="assets/office.webp" alt="1% AI Labs"></li><li class="row" data-img="assets/film.webp"><span class="rn">02</span><div><h3>AvaEra</h3><p>技术合伙人 · 从零打造并上线整个 AvaEra 平台。</p></div><img class="rimg" src="assets/film.webp" alt="AvaEra"></li><li class="row" data-img="assets/teach.webp"><span class="rn">03</span><div><h3>BE'OLE Academy</h3><p>AI 课程讲师 · 教 AI 真人视频制作。</p></div><img class="rimg" src="assets/teach.webp" alt="BE'OLE Academy"></li><li class="row" data-img="assets/stage.webp"><span class="rn">04</span><div><h3>1% Better Club</h3><p>联合创始人 · 马来西亚创业者社群，一起把生意做大。</p></div><img class="rimg" src="assets/stage.webp" alt="1% Better Club"></li></ul><img class="float" id="float" alt="">
+<h2 class="sec-h">现在<em>在做</em></h2><ul class="rows"><li class="row" data-img="assets/office.webp"><span class="rn">01</span><div><h3>1% AI Labs</h3><p>联合创始人 · 为中小企业做 AI 系统、AI 视频和自动化。</p></div><img class="rimg" src="assets/office.webp" alt="1% AI Labs"></li><li class="row" data-img="assets/film.webp"><span class="rn">02</span><div><h3>AvaEra</h3><p>技术合伙人 · 从零打造并上线整个 AvaEra 平台。</p></div><img class="rimg" src="assets/film.webp" alt="AvaEra"></li><li class="row" data-img="assets/teach.webp"><span class="rn">03</span><div><h3>BE'OLE Academy</h3><p>AI 课程讲师 · 教 AI 真人视频制作。</p></div><img class="rimg" src="assets/teach.webp" alt="BE'OLE Academy"></li><li class="row" data-img="assets/stage.webp"><span class="rn">04</span><div><h3>1% Better Club</h3><p>联合创始人 · 马来西亚创业者社群，一起把生意做大。</p></div><img class="rimg" src="assets/stage.webp" alt="1% Better Club"></li></ul><div class="cur" id="cur"><span>VIEW</span></div>
 <h2 class="sec-h" style="padding-top:16svh">成功<em>案例</em></h2><div class="stack"><article class="sc" style="--i:0"><div class="sc-in"><div class="sc-tx"><span>01</span><h3>2011 销售冠军</h3><p>iSolution · 面对面销售银行金融产品，拿下第一名。</p></div><img src="assets/story_stage.webp" alt="2011 销售冠军"></div></article><article class="sc" style="--i:1"><div class="sc-in"><div class="sc-tx"><span>02</span><h3>Kohai Esports 首席运营官</h3><p>两年从项目总监升 COO，带 30 人团队，参与 IPO 前期筹备，募得 RM400 万。</p></div><img src="assets/story_kohai.webp" alt="Kohai Esports 首席运营官"></div></article><article class="sc" style="--i:2"><div class="sc-in"><div class="sc-tx"><span>03</span><h3>一个月上线 AvaEra</h3><p>2026 年 9 月开工，10 月整个平台上线。</p></div><img src="assets/story_avaera.webp" alt="一个月上线 AvaEra"></div></article></div>
 <section class="cardsec"><h2>碰一下，<br><em>就认识我。</em></h2><div class="ncard-wrap"><div class="ncard " id="ncard">
   <div class="face front"><div class="nc-top"><span class="nc-logo">1%</span><span class="nc-chip"></span></div>
@@ -113,22 +115,20 @@ function trail(x,y){if(Math.hypot(x-lx,y-ly)>(innerWidth<760?60:90)){drop(x,y);l
 function inHero(x,y){const r=hero.getBoundingClientRect();return y>r.top&&y<r.bottom}
 addEventListener('pointermove',e=>{if(inHero(e.clientX,e.clientY))trail(e.clientX,e.clientY)});
 addEventListener('touchmove',e=>{const t=e.touches[0];if(inHero(t.clientX,t.clientY))trail(t.clientX,t.clientY)},{passive:true});
-// velocity marquee
-const mq=document.getElementById('mq');let mx=0,vel=0;
-ScrollTrigger.create({onUpdate:s=>{vel=s.getVelocity()/80}});
-gsap.ticker.add(()=>{mx-=1+Math.abs(vel)*.4;vel*=.92;const w=mq.scrollWidth/4;if(-mx>w)mx+=w;gsap.set(mq,{x:mx,skewX:gsap.utils.clamp(-12,12,-vel*.6)})});
+// scroll-to-read: each character lights up as you scroll
+const chars=[...document.querySelectorAll('#say .c')];
+ScrollTrigger.create({trigger:'.say',start:'top 75%',end:'bottom 45%',scrub:true,onUpdate:s=>{const n=Math.round(s.progress*chars.length);chars.forEach((c,i)=>c.classList.toggle('on',i<n))}});
 // stats
 gsap.from('.st',{y:60,opacity:0,duration:1.1,ease:EXPO,stagger:.08,scrollTrigger:{trigger:'.stats',start:'top 80%'}});
 document.querySelectorAll('.sec-h').forEach(h=>gsap.from(h,{yPercent:40,opacity:0,duration:1.2,ease:EXPO,scrollTrigger:{trigger:h,start:'top 85%'}}));
-// rows: floating image follows the mouse; tap opens on touch
-const fl=document.getElementById('float'),fx=gsap.quickTo(fl,'x',{duration:.5,ease:'power3'}),fy=gsap.quickTo(fl,'y',{duration:.5,ease:'power3'});
+// rows: photo opens in its own column on the right (never covers text); dot cursor grows to VIEW
+const cur=document.getElementById('cur'),cx=gsap.quickTo(cur,'x',{duration:.35,ease:'power3'}),cy=gsap.quickTo(cur,'y',{duration:.35,ease:'power3'});
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+addEventListener('pointermove',e=>{cx(e.clientX);cy(e.clientY)});
+document.querySelectorAll('.row,a,.ncard').forEach(el=>{el.addEventListener('pointerenter',()=>cur.classList.toggle('big',el.classList.contains('row')));el.addEventListener('pointerleave',()=>cur.classList.remove('big'))});
 document.querySelectorAll('.row').forEach(r=>{
-  if(fine){r.addEventListener('pointerenter',()=>{fl.src=r.dataset.img;gsap.to(fl,{opacity:1,scale:1,duration:.5,ease:EXPO})});
-    r.addEventListener('pointerleave',()=>gsap.to(fl,{opacity:0,scale:.6,duration:.4}));}
   r.addEventListener('click',()=>{if(fine)return;const o=r.classList.toggle('open');if(o)gsap.from(r.querySelector('.rimg'),{clipPath:'inset(0 0 100% 0)',duration:.9,ease:'expo.out'});ScrollTrigger.refresh()});
   gsap.from(r,{y:40,opacity:0,duration:1,ease:EXPO,scrollTrigger:{trigger:r,start:'top 90%'}});});
-addEventListener('pointermove',e=>{fx(e.clientX);fy(e.clientY)});
 // stacked story cards: earlier cards shrink as the next one arrives
 const cards=[...document.querySelectorAll('.sc')];
 cards.forEach((c,i)=>{if(i===cards.length-1)return;

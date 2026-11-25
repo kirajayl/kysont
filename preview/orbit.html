@@ -117,8 +117,8 @@ const mats=[edge,edge,edge,edge,new THREE.MeshStandardMaterial({map:front,emissi
 const card=new THREE.Mesh(new THREE.BoxGeometry(3.2,2,.045),mats);S.add(card);
 S.add(new THREE.AmbientLight(0xffffff,1.1));const L1=new THREE.PointLight(0xc8ff3e,40,20);L1.position.set(3,2,4);S.add(L1);
 const L2=new THREE.PointLight(0xffffff,30,20);L2.position.set(-3,-1,5);S.add(L2);
-// ---- particles: sphere -> "1%" -> galaxy
-const N=2400;
+// ---- particles: FACE -> "1%" -> galaxy -> sphere
+const N=mobile()?4200:6500;
 function sphere(){const a=new Float32Array(N*3);for(let i=0;i<N;i++){const u=Math.random()*2-1,t=Math.random()*Math.PI*2,r=3.4+Math.random()*.25,s=Math.sqrt(1-u*u);
   a.set([r*s*Math.cos(t),r*u,r*s*Math.sin(t)],i*3)}return a}
 function text(){const c=document.createElement('canvas');c.width=400;c.height=200;const g=c.getContext('2d');g.fillStyle='#fff';g.font='900 170px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('1%',200,105);
@@ -126,12 +126,29 @@ function text(){const c=document.createElement('canvas');c.width=400;c.height=20
   const a=new Float32Array(N*3);for(let i=0;i<N;i++){const p=pts[Math.floor(Math.random()*pts.length)];a.set([(p[0]-200)/32,-(p[1]-100)/32,(Math.random()-.5)*.4],i*3)}return a}
 function galaxy(){const a=new Float32Array(N*3);for(let i=0;i<N;i++){const arm=i%3,r=Math.pow(Math.random(),.6)*6.5+.6,t=r*.9+arm*2.094+(Math.random()-.5)*.5;
   a.set([r*Math.cos(t),(Math.random()-.5)*.35,r*Math.sin(t)],i*3)}return a}
-const SH=[sphere(),text(),galaxy(),sphere()];
+const IMG=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src='assets/hero_cut.webp'});
+const FW=210,FH=281,FU=mobile()?5.0/FH:6.0/FH,FOX=mobile()?0:2.3,FOY=mobile()?1.2:-.2;
+const faceCol=new Float32Array(N*3);
+function face(){const c=document.createElement('canvas');c.width=FW;c.height=FH;const g=c.getContext('2d');g.drawImage(IMG,0,0,FW,FH);
+  const d=g.getImageData(0,0,FW,FH).data,cand=[];
+  for(let y=0;y<FH;y++)for(let x=0;x<FW;x++){const k=(y*FW+x)*4;if(d[k+3]<140)continue;const l=(d[k]*.3+d[k+1]*.59+d[k+2]*.11)/255;cand.push([x,y,Math.pow(l,.9)+.07,d[k]/255,d[k+1]/255,d[k+2]/255])}
+  const a=new Float32Array(N*3);let i=0;while(i<N){const q=cand[Math.floor(Math.random()*cand.length)];if(Math.random()>q[2])continue;
+    a.set([(q[0]+Math.random()-FW/2)*FU+FOX,-(q[1]+Math.random()-FH/2)*FU+FOY,(Math.random()-.5)*.08],i*3);
+    const b=1.35;faceCol.set([Math.min(1,q[3]*b+.04),Math.min(1,q[4]*b+.04),Math.min(1,q[5]*b+.04)],i*3);i++}return a}
+const SH=[face(),text(),galaxy(),sphere()];
+// real photo under the dots, shown only around the pointer
+const ftex=new THREE.Texture(IMG);ftex.needsUpdate=true;
+const reveal=new THREE.Mesh(new THREE.PlaneGeometry(FW*FU,FH*FU),new THREE.ShaderMaterial({transparent:true,depthWrite:false,
+  uniforms:{map:{value:ftex},uPtr:{value:new THREE.Vector2(99,99)},uR:{value:mobile()?1.15:1.35},uShow:{value:1}},
+  vertexShader:'varying vec2 vUv;varying vec2 vW;void main(){vUv=uv;vec4 w=modelMatrix*vec4(position,1.);vW=w.xy;gl_Position=projectionMatrix*viewMatrix*w;}',
+  fragmentShader:'uniform sampler2D map;uniform vec2 uPtr;uniform float uR,uShow;varying vec2 vUv;varying vec2 vW;void main(){vec4 c=texture2D(map,vUv);float d=distance(vW,uPtr);float a=c.a*(1.-smoothstep(uR*.45,uR,d))*uShow;gl_FragColor=vec4(c.rgb,a);}'}));
+reveal.position.set(FOX,FOY,-.05);S.add(reveal);
 const pos=new Float32Array(SH[0]),vel=new Float32Array(N*3);
 const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
-const col=new Float32Array(N*3);for(let i=0;i<N;i++){const c=Math.random()<.22?[.78,1,.24]:[.85,.87,.92];col.set(c,i*3)}pg.setAttribute('color',new THREE.BufferAttribute(col,3));
+const themeCol=new Float32Array(N*3);for(let i=0;i<N;i++){const c=Math.random()<.22?[.78,1,.24]:[.85,.87,.92];themeCol.set(c,i*3)}
+const col=new Float32Array(faceCol);pg.setAttribute('color',new THREE.BufferAttribute(col,3));
 const dot=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');const r=g.createRadialGradient(32,32,0,32,32,32);r.addColorStop(0,'#fff');r.addColorStop(.35,'rgba(255,255,255,.6)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)})();
-const pts=new THREE.Points(pg,new THREE.PointsMaterial({size:.07,map:dot,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));S.add(pts);
+const pts=new THREE.Points(pg,new THREE.PointsMaterial({size:mobile()?.06:.055,map:dot,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));S.add(pts);
 // ---- pointer / touch
 const ptr=new THREE.Vector2(9,9),ndc=new THREE.Vector2(),ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,0,1),0),hit=new THREE.Vector3();
 let tRX=0,tRY=0,burst=0;
@@ -142,18 +159,21 @@ addEventListener('pointerdown',e=>{if(e.target.closest('a,.ncard'))return;mv(e.c
 const tmp=new Float32Array(N*3);let t0=performance.now();
 function lerpShape(p){const seg=Math.min(2.999,p*3),i=Math.floor(seg);let f=seg-i;f=f*f*(3-2*f);const a=SH[i],b=SH[i+1];for(let k=0;k<N*3;k++)tmp[k]=a[k]+(b[k]-a[k])*f}
 function loop(now){const t=(now-t0)/1000,p=window.__scrollP||0;
-  lerpShape(Math.min(1,p*1.15));
-  const rad=mobile()?1.4:1.8;
+  const q=Math.min(1,p*1.15);lerpShape(q);
+  const faceAmt=Math.max(0,1-q*3/0.6);const fe=faceAmt*faceAmt*(3-2*faceAmt);
+  if(fe!==window.__fe){window.__fe=fe;for(let k=0;k<N*3;k++)col[k]=themeCol[k]+(faceCol[k]-themeCol[k])*fe;pg.attributes.color.needsUpdate=true}
+  reveal.material.uniforms.uShow.value=fe;reveal.material.uniforms.uPtr.value.copy(ptr);
+  const rad=mobile()?1.15:1.35;
   for(let i=0;i<N;i++){const j=i*3;let dx=pos[j]-ptr.x,dy=pos[j+1]-ptr.y;const d2=dx*dx+dy*dy;
     if(d2<rad*rad){const f=(1-Math.sqrt(d2)/rad)*.06;vel[j]+=dx*f;vel[j+1]+=dy*f}
     if(burst>0){vel[j]+=pos[j]*.02*burst;vel[j+1]+=pos[j+1]*.02*burst;vel[j+2]+=pos[j+2]*.02*burst}
     vel[j]+=(tmp[j]-pos[j])*.045;vel[j+1]+=(tmp[j+1]-pos[j+1])*.045;vel[j+2]+=(tmp[j+2]-pos[j+2])*.045;
     vel[j]*=.84;vel[j+1]*=.84;vel[j+2]*=.84;pos[j]+=vel[j];pos[j+1]+=vel[j+1];pos[j+2]+=vel[j+2]}
   burst=Math.max(0,burst-.08);pg.attributes.position.needsUpdate=true;
-  pts.rotation.y=t*.05+p*2.2;pts.rotation.x=p>.55&&p<.85?.5:.15*Math.sin(t*.3);
+  pts.rotation.y=(t*.05+p*2.2)*(1-fe);pts.rotation.x=(p>.55&&p<.85?.5:.15*Math.sin(t*.3))*(1-fe);
   // card choreography: hero centre -> aside -> spin to back -> centre front -> fade
   const m=mobile(),k=Math.min(4,Math.round(p*4));const tx=m?0:[2.4,-2.6,2.6,-2.4,0][k];
-  const ty=m?(p<.05?1.75:2.3):(p<.05?.95:0), ts=p>.9?0.0001:(m?(p<.05?1.05:.62):(p<.05?1.05:.75));
+  const ty=m?(p<.05?1.75:2.3):(p<.05?.95:0), ts=(p>.9||fe>.5)?0.0001:(m?.62:.75);
   card.position.x+=(tx-card.position.x)*.06;card.position.y+=(ty+Math.sin(t*1.2)*.08-card.position.y)*.06;
   const s=card.scale.x+(ts-card.scale.x)*.07;card.scale.set(s,s,s);
   const spin=p*Math.PI*2;card.rotation.y+=((spin+tRY)-card.rotation.y)*.07;card.rotation.x+=(tRX+Math.sin(t*.8)*.06-card.rotation.x)*.07;
