@@ -1,0 +1,163 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Kysont Tan — Orbit</title><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=JetBrains+Mono&family=Noto+Sans+SC:wght@400;900&display=swap" rel="stylesheet"><style>
+.ncard-wrap{perspective:1200px;display:flex;justify-content:center}
+.ncard{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;width:min(420px,86vw);aspect-ratio:1.6;position:relative;transform-style:preserve-3d;
+  transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s cubic-bezier(.2,.8,.2,1);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ncard.flip{transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + 180deg))}
+.ncard .face{position:absolute;inset:0;border-radius:18px;padding:24px 26px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;display:flex;flex-direction:column}
+.ncard .back{transform:rotateY(180deg);gap:8px;justify-content:center}
+.ncard .back a{font-size:14px;padding:8px 12px;border-radius:10px;text-decoration:none}
+.nc-top{display:flex;justify-content:space-between;align-items:center}
+.nc-logo{font-weight:900;font-size:22px}.nc-chip{width:40px;height:30px;border-radius:6px}
+.nc-name{margin-top:auto;font-weight:900;font-size:28px;letter-spacing:.04em}.nc-name.sm{font-size:18px;margin:0 0 6px}
+.nc-role{font-size:12px;letter-spacing:.14em;opacity:.8;margin-top:4px}.nc-hint{font-size:10px;letter-spacing:.2em;opacity:.5;margin-top:12px}
+.shine{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.35),transparent 45%);mix-blend-mode:overlay}
+
+:root{--bg:#090a0c;--fg:#e9eaee;--mu:#8a8d96;--ac:#c8ff3e}
+*{margin:0;padding:0;box-sizing:border-box}html{background:var(--bg)}body{background:var(--bg);color:var(--fg);font-family:'Noto Sans SC',sans-serif;overflow-x:hidden}
+::selection{background:var(--ac);color:#000}
+canvas#gl{position:fixed;inset:0;width:100vw;height:100svh;z-index:0;display:block}
+main{position:relative;z-index:1;pointer-events:none}main a,main .ncard,main button{pointer-events:auto}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.2em;font-size:12px;color:var(--ac)}
+.hero.chap{justify-content:flex-end;padding-bottom:10svh}
+.hero h1{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(46px,10.5vw,160px);line-height:.92;letter-spacing:-.03em}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top}.hero h1 .w>span{display:inline-block}
+.hero p{margin-top:14px;font-size:clamp(16px,2vw,22px);color:#c9cbd2}
+.chap{min-height:100svh;padding:14svh 6vw;display:flex;flex-direction:column;justify-content:center}
+.chap h2{font-family:'Unbounded';font-weight:800;font-size:clamp(34px,6.4vw,96px);line-height:1;margin:14px 0 6svh;letter-spacing:-.02em}
+.chap h2 em{font-style:normal;color:var(--ac)}
+.right{align-items:flex-end;text-align:right}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:14px}
+.st{padding:22px;border-radius:16px;background:rgba(20,22,26,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid #ffffff18;text-align:left}
+.st b{font-family:'Unbounded';font-weight:800;font-size:clamp(34px,5vw,64px);display:block;color:var(--ac)}.st i{font-style:normal;color:var(--mu);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,340px));gap:14px}
+.gl{padding:24px;border-radius:18px;background:rgba(20,22,26,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid #ffffff18;text-align:left;pointer-events:auto;transition:border-color .4s,transform .6s cubic-bezier(.16,1,.3,1)}
+.gl:hover{border-color:var(--ac);transform:translateY(-6px)}
+.gl small{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.18em;color:var(--ac)}.gl h3{font-family:'Unbounded';font-weight:700;font-size:21px;margin:10px 0 8px}.gl p{color:var(--mu);font-size:14px;line-height:1.6}
+.stories{display:grid;gap:16px;max-width:620px}
+.story{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}.story img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
+.story span{font-family:'JetBrains Mono';color:var(--ac);font-size:12px}
+.cardsec{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14svh 6vw}
+.cardsec h2{margin-bottom:6svh}
+.ncard .front{background:linear-gradient(140deg,#1b1d22,#0e0f12);color:#fff;border:1px solid #ffffff2a;box-shadow:0 30px 80px #000a,0 0 0 1px #c8ff3e22}
+.ncard .front::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(200,255,62,.18) var(--mx),transparent 75%);pointer-events:none}
+.nc-chip{background:linear-gradient(135deg,#f0f2f5,#8b9099)}.nc-logo{color:var(--ac)}
+.ncard .back{background:#111317;border:1px solid #c8ff3e55}.ncard .back a{background:#ffffff0c;color:#fff;border:1px solid #ffffff1c}
+.cta{display:inline-block;margin-top:7svh;padding:19px 38px;border-radius:999px;background:var(--ac);color:#000;font-weight:900;text-decoration:none;pointer-events:auto}
+.prog{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:10px}
+.prog i{width:6px;height:6px;border-radius:50%;background:#ffffff33;transition:background .4s,transform .4s}.prog i.on{background:var(--ac);transform:scale(1.6)}
+@media (max-width:760px){.grid,.stats{grid-template-columns:1fr 1fr}.story{grid-template-columns:96px 1fr}.right{align-items:flex-start;text-align:left}.prog{right:8px}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}</style></head><body><canvas id="gl" aria-hidden="true"></canvas><div class="prog" id="prog"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+<main>
+<section class="hero chap" data-c="0"><div class="mono">&gt; Co-Founder · 1% AI Labs</div>
+ <h1><span class="w"><span>KYSONT</span></span><br><span class="w"><span>TAN</span></span></h1><p>18 年，把新科技变成真生意。</p></section>
+<section class="chap right" data-c="1"><div class="mono">01 · NUMBERS</div><h2>不是概念，<br><em>是数字。</em></h2><div class="stats"><div class="st"><b><span data-count="18">0</span></b><i>年科技 · 销售 · 金融</i></div><div class="st"><b><span data-count="14">0</span></b><i>家公司在用我们的系统</i></div><div class="st"><b><span data-count="1000">0</span>+</b><i>位学员</i></div><div class="st"><b><span data-count="3000">0</span>+</b><i>条 AI 视频</i></div></div></section>
+<section class="chap" data-c="2"><div class="mono">02 · NOW</div><h2>我现在<em>在做</em></h2><div class="grid"><article class="gl"><small>联合创始人</small><h3>1% AI Labs</h3><p>为中小企业做 AI 系统、AI 视频和自动化。</p></article><article class="gl"><small>技术合伙人</small><h3>AvaEra</h3><p>从零打造并上线整个 AvaEra 平台。</p></article><article class="gl"><small>AI 课程讲师</small><h3>BE'OLE Academy</h3><p>教 AI 真人视频制作。</p></article><article class="gl"><small>联合创始人</small><h3>1% Better Club</h3><p>马来西亚创业者社群，一起把生意做大。</p></article></div></section>
+<section class="chap right" data-c="3"><div class="mono">03 · PROOF</div><h2>成功<em>案例</em></h2><div class="stories"><article class="gl story"><img src="assets/story_stage.webp" alt="2011 销售冠军"><div><span>01</span><h3>2011 销售冠军</h3><p>iSolution · 面对面销售银行金融产品，拿下第一名。</p></div></article><article class="gl story"><img src="assets/story_kohai.webp" alt="Kohai Esports 首席运营官"><div><span>02</span><h3>Kohai Esports 首席运营官</h3><p>两年从项目总监升 COO，带 30 人团队，参与 IPO 前期筹备，募得 RM400 万。</p></div></article><article class="gl story"><img src="assets/story_avaera.webp" alt="一个月上线 AvaEra"><div><span>03</span><h3>一个月上线 AvaEra</h3><p>2026 年 9 月开工，10 月整个平台上线。</p></div></article></div></section>
+<section class="cardsec" data-c="4"><div class="mono">04 · CONNECT</div><h2 class="chap-h" style="font-family:Unbounded;font-weight:800;font-size:clamp(34px,6.4vw,96px);line-height:1;margin:14px 0 6svh">碰一下，<br><em style="font-style:normal;color:var(--ac)">就认识我。</em></h2>
+<div class="ncard-wrap"><div class="ncard " id="ncard">
+  <div class="face front"><div class="nc-top"><span class="nc-logo">1%</span><span class="nc-chip"></span></div>
+    <div class="nc-name">KYSONT TAN</div><div class="nc-role">Co-Founder · 1% AI Labs</div><div class="nc-hint">TAP / CLICK TO FLIP ↻</div><div class="shine"></div></div>
+  <div class="face back"><div class="nc-name sm">KYSONT TAN</div>
+    <a href="https://wa.me/60122708263">WhatsApp</a><a href="tel:+60122708263">Call · 电话</a><a href="mailto:kysont.tan@gmail.com">Email</a><a href="assets/kysont.vcf" download>Save contact · 保存联系方式</a><div class="shine"></div></div>
+</div></div><a class="cta" id="cta" href="https://wa.me/60122708263">WhatsApp 我 →</a></section>
+</main><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script><script>
+gsap.registerPlugin(ScrollTrigger);
+const card=document.getElementById('ncard');
+function tilt(x,y){const r=card.getBoundingClientRect();const px=(x-r.left)/r.width-.5,py=(y-r.top)/r.height-.5;
+  card.style.setProperty('--rx',(-py*22)+'deg');card.style.setProperty('--ry',(px*26)+'deg');card.style.setProperty('--mx',(px+.5)*100+'%');card.style.setProperty('--my',(py+.5)*100+'%');}
+card.addEventListener('pointermove',e=>tilt(e.clientX,e.clientY));
+card.addEventListener('pointerleave',()=>{card.style.setProperty('--rx','0deg');card.style.setProperty('--ry','0deg')});
+card.addEventListener('touchmove',e=>{const t=e.touches[0];tilt(t.clientX,t.clientY)},{passive:true});
+card.addEventListener('click',e=>{if(e.target.closest('a'))return;card.classList.toggle('flip')});
+document.querySelectorAll('[data-count]').forEach(el=>{const n=+el.dataset.count;const o={v:0};
+  gsap.to(o,{v:n,duration:2,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%'},onUpdate:()=>el.textContent=Math.round(o.v).toLocaleString()})});
+
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lenis=null;
+if(!REDUCE){lenis=new Lenis({lerp:.09,smoothWheel:true});lenis.on('scroll',ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);}
+const EXPO='expo.out';
+addEventListener('load',()=>ScrollTrigger.refresh());document.fonts&&document.fonts.ready.then(()=>ScrollTrigger.refresh());
+function magnet(el,k){if(!el)return;const xt=gsap.quickTo(el,'x',{duration:.5,ease:'power3'}),yt=gsap.quickTo(el,'y',{duration:.5,ease:'power3'});
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();xt((e.clientX-r.left-r.width/2)*k);yt((e.clientY-r.top-r.height/2)*k)});
+  el.addEventListener('pointerleave',()=>{xt(0);yt(0)});}
+
+gsap.from('.hero h1 .w>span',{yPercent:110,duration:1.4,ease:EXPO,stagger:.12,delay:.3});
+gsap.from('.hero .mono,.hero p',{opacity:0,y:20,duration:1,ease:EXPO,delay:.9,stagger:.1});
+document.querySelectorAll('.chap:not(.hero),.cardsec').forEach(s=>{
+  gsap.from(s.querySelectorAll('h2,.st,.gl'),{y:70,opacity:0,duration:1.1,ease:EXPO,stagger:.07,scrollTrigger:{trigger:s,start:'top 65%'}});});
+const dots=[...document.querySelectorAll('#prog i')];
+document.querySelectorAll('[data-c]').forEach(s=>ScrollTrigger.create({trigger:s,start:'top 50%',end:'bottom 50%',
+  onToggle:st=>{if(st.isActive)dots.forEach((d,i)=>d.classList.toggle('on',i==+s.dataset.c))}}));
+magnet(document.getElementById('cta'),.35);
+window.__scrollP=0;ScrollTrigger.create({start:0,end:'max',onUpdate:s=>window.__scrollP=s.progress});
+</script><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const cv=document.getElementById('gl');
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:false});R.setPixelRatio(Math.min(devicePixelRatio,2));R.setClearColor(0x090a0c);
+R.outputColorSpace=THREE.SRGBColorSpace;
+const S=new THREE.Scene();S.fog=new THREE.Fog(0x090a0c,9,22);
+const cam=new THREE.PerspectiveCamera(40,1,.1,100);cam.position.set(0,0,10);
+const mobile=()=>innerWidth<760;
+function size(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.fov=mobile()?58:40;cam.updateProjectionMatrix()}
+size();addEventListener('resize',size);
+// ---- card textures (canvas)
+function tex(draw){const c=document.createElement('canvas');c.width=1024;c.height=640;const g=c.getContext('2d');draw(g);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t}
+function base(g){const gr=g.createLinearGradient(0,0,1024,640);gr.addColorStop(0,'#24272d');gr.addColorStop(1,'#0d0e11');g.fillStyle=gr;g.fillRect(0,0,1024,640);
+  g.strokeStyle='rgba(200,255,62,.35)';g.lineWidth=3;g.strokeRect(14,14,996,612);}
+const front=tex(g=>{base(g);g.fillStyle='#c8ff3e';g.font='900 92px Arial';g.fillText('1%',70,150);
+  const ch=g.createLinearGradient(820,80,930,160);ch.addColorStop(0,'#f2f3f5');ch.addColorStop(1,'#7d828b');g.fillStyle=ch;g.fillRect(820,80,110,80);
+  g.fillStyle='#fff';g.font='800 84px Arial';g.fillText('KYSONT TAN',70,470);g.fillStyle='#9a9ea8';g.font='34px Arial';g.fillText('CO-FOUNDER  ·  1% AI LABS',72,530)});
+const back=tex(g=>{base(g);g.fillStyle='#c8ff3e';g.font='700 40px Arial';g.fillText('WHATSAPP',70,150);g.fillStyle='#fff';g.font='700 64px Arial';g.fillText('+60 12-270 8263',70,230);
+  g.fillStyle='#c8ff3e';g.font='700 40px Arial';g.fillText('EMAIL',70,350);g.fillStyle='#fff';g.font='54px Arial';g.fillText('kysont.tan@gmail.com',70,420);
+  g.fillStyle='#9a9ea8';g.font='34px Arial';g.fillText('kysont.the1percentclub.net',70,560)});
+const edge=new THREE.MeshStandardMaterial({color:0xc8ff3e,metalness:.3,roughness:.4});
+const mats=[edge,edge,edge,edge,new THREE.MeshStandardMaterial({map:front,emissive:0xffffff,emissiveMap:front,emissiveIntensity:.55,metalness:.25,roughness:.35}),new THREE.MeshStandardMaterial({map:back,emissive:0xffffff,emissiveMap:back,emissiveIntensity:.55,metalness:.25,roughness:.35})];
+const card=new THREE.Mesh(new THREE.BoxGeometry(3.2,2,.045),mats);S.add(card);
+S.add(new THREE.AmbientLight(0xffffff,1.1));const L1=new THREE.PointLight(0xc8ff3e,40,20);L1.position.set(3,2,4);S.add(L1);
+const L2=new THREE.PointLight(0xffffff,30,20);L2.position.set(-3,-1,5);S.add(L2);
+// ---- particles: sphere -> "1%" -> galaxy
+const N=2400;
+function sphere(){const a=new Float32Array(N*3);for(let i=0;i<N;i++){const u=Math.random()*2-1,t=Math.random()*Math.PI*2,r=3.4+Math.random()*.25,s=Math.sqrt(1-u*u);
+  a.set([r*s*Math.cos(t),r*u,r*s*Math.sin(t)],i*3)}return a}
+function text(){const c=document.createElement('canvas');c.width=400;c.height=200;const g=c.getContext('2d');g.fillStyle='#fff';g.font='900 170px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('1%',200,105);
+  const d=g.getImageData(0,0,400,200).data,pts=[];for(let y=0;y<200;y+=2)for(let x=0;x<400;x+=2)if(d[(y*400+x)*4+3]>128)pts.push([x,y]);
+  const a=new Float32Array(N*3);for(let i=0;i<N;i++){const p=pts[Math.floor(Math.random()*pts.length)];a.set([(p[0]-200)/32,-(p[1]-100)/32,(Math.random()-.5)*.4],i*3)}return a}
+function galaxy(){const a=new Float32Array(N*3);for(let i=0;i<N;i++){const arm=i%3,r=Math.pow(Math.random(),.6)*6.5+.6,t=r*.9+arm*2.094+(Math.random()-.5)*.5;
+  a.set([r*Math.cos(t),(Math.random()-.5)*.35,r*Math.sin(t)],i*3)}return a}
+const SH=[sphere(),text(),galaxy(),sphere()];
+const pos=new Float32Array(SH[0]),vel=new Float32Array(N*3);
+const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+const col=new Float32Array(N*3);for(let i=0;i<N;i++){const c=Math.random()<.22?[.78,1,.24]:[.85,.87,.92];col.set(c,i*3)}pg.setAttribute('color',new THREE.BufferAttribute(col,3));
+const dot=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');const r=g.createRadialGradient(32,32,0,32,32,32);r.addColorStop(0,'#fff');r.addColorStop(.35,'rgba(255,255,255,.6)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)})();
+const pts=new THREE.Points(pg,new THREE.PointsMaterial({size:.07,map:dot,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));S.add(pts);
+// ---- pointer / touch
+const ptr=new THREE.Vector2(9,9),ndc=new THREE.Vector2(),ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,0,1),0),hit=new THREE.Vector3();
+let tRX=0,tRY=0,burst=0;
+function mv(x,y){ndc.set(x/innerWidth*2-1,-(y/innerHeight)*2+1);tRY=ndc.x*.6;tRX=-ndc.y*.4;ray.setFromCamera(ndc,cam);ray.ray.intersectPlane(plane,hit);ptr.set(hit.x,hit.y)}
+addEventListener('pointermove',e=>mv(e.clientX,e.clientY));addEventListener('touchmove',e=>{const t=e.touches[0];mv(t.clientX,t.clientY)},{passive:true});
+addEventListener('pointerdown',e=>{if(e.target.closest('a,.ncard'))return;mv(e.clientX,e.clientY);burst=1});
+// ---- loop
+const tmp=new Float32Array(N*3);let t0=performance.now();
+function lerpShape(p){const seg=Math.min(2.999,p*3),i=Math.floor(seg);let f=seg-i;f=f*f*(3-2*f);const a=SH[i],b=SH[i+1];for(let k=0;k<N*3;k++)tmp[k]=a[k]+(b[k]-a[k])*f}
+function loop(now){const t=(now-t0)/1000,p=window.__scrollP||0;
+  lerpShape(Math.min(1,p*1.15));
+  const rad=mobile()?1.4:1.8;
+  for(let i=0;i<N;i++){const j=i*3;let dx=pos[j]-ptr.x,dy=pos[j+1]-ptr.y;const d2=dx*dx+dy*dy;
+    if(d2<rad*rad){const f=(1-Math.sqrt(d2)/rad)*.06;vel[j]+=dx*f;vel[j+1]+=dy*f}
+    if(burst>0){vel[j]+=pos[j]*.02*burst;vel[j+1]+=pos[j+1]*.02*burst;vel[j+2]+=pos[j+2]*.02*burst}
+    vel[j]+=(tmp[j]-pos[j])*.045;vel[j+1]+=(tmp[j+1]-pos[j+1])*.045;vel[j+2]+=(tmp[j+2]-pos[j+2])*.045;
+    vel[j]*=.84;vel[j+1]*=.84;vel[j+2]*=.84;pos[j]+=vel[j];pos[j+1]+=vel[j+1];pos[j+2]+=vel[j+2]}
+  burst=Math.max(0,burst-.08);pg.attributes.position.needsUpdate=true;
+  pts.rotation.y=t*.05+p*2.2;pts.rotation.x=p>.55&&p<.85?.5:.15*Math.sin(t*.3);
+  // card choreography: hero centre -> aside -> spin to back -> centre front -> fade
+  const m=mobile(),k=Math.min(4,Math.round(p*4));const tx=m?0:[2.4,-2.6,2.6,-2.4,0][k];
+  const ty=m?(p<.05?1.75:2.3):(p<.05?.95:0), ts=p>.9?0.0001:(m?(p<.05?1.05:.62):(p<.05?1.05:.75));
+  card.position.x+=(tx-card.position.x)*.06;card.position.y+=(ty+Math.sin(t*1.2)*.08-card.position.y)*.06;
+  const s=card.scale.x+(ts-card.scale.x)*.07;card.scale.set(s,s,s);
+  const spin=p*Math.PI*2;card.rotation.y+=((spin+tRY)-card.rotation.y)*.07;card.rotation.x+=(tRX+Math.sin(t*.8)*.06-card.rotation.x)*.07;
+  L1.position.x=ptr.x<8?ptr.x:3;L1.position.y=ptr.y<8?ptr.y:2;
+  R.render(S,cam);requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>

@@ -1,0 +1,134 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Kysont Tan — Portal</title><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,900&family=JetBrains+Mono:wght@400&family=Noto+Sans+SC:wght@400;900&display=swap" rel="stylesheet"><style>
+.ncard-wrap{perspective:1200px;display:flex;justify-content:center}
+.ncard{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;width:min(420px,86vw);aspect-ratio:1.6;position:relative;transform-style:preserve-3d;
+  transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s cubic-bezier(.2,.8,.2,1);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ncard.flip{transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + 180deg))}
+.ncard .face{position:absolute;inset:0;border-radius:18px;padding:24px 26px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;display:flex;flex-direction:column}
+.ncard .back{transform:rotateY(180deg);gap:8px;justify-content:center}
+.ncard .back a{font-size:14px;padding:8px 12px;border-radius:10px;text-decoration:none}
+.nc-top{display:flex;justify-content:space-between;align-items:center}
+.nc-logo{font-weight:900;font-size:22px}.nc-chip{width:40px;height:30px;border-radius:6px}
+.nc-name{margin-top:auto;font-weight:900;font-size:28px;letter-spacing:.04em}.nc-name.sm{font-size:18px;margin:0 0 6px}
+.nc-role{font-size:12px;letter-spacing:.14em;opacity:.8;margin-top:4px}.nc-hint{font-size:10px;letter-spacing:.2em;opacity:.5;margin-top:12px}
+.shine{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.35),transparent 45%);mix-blend-mode:overlay}
+
+:root{--bg:#0c0b0a;--fg:#f2eee8;--mu:#8d8781;--ac:#ff5a1f}
+*{margin:0;padding:0;box-sizing:border-box}html{background:var(--bg)}body{background:var(--bg);color:var(--fg);font-family:'Noto Sans SC',sans-serif;overflow-x:hidden}
+::selection{background:var(--ac);color:#0c0b0a}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.portal{height:100svh;position:relative;overflow:hidden}
+.p-img{position:absolute;inset:0;overflow:hidden}.p-img img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;transform:scale(1.25);will-change:transform}
+.p-mask{position:absolute;inset:0;background:var(--bg);mix-blend-mode:multiply;display:grid;place-items:center;will-change:transform}
+.p-mask h1{font-family:'Archivo',sans-serif;font-weight:900;font-stretch:125%;color:#fff;line-height:.8;letter-spacing:-.02em;white-space:nowrap}
+.p-out{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;will-change:transform}.p-out .ow{font-family:'Archivo',sans-serif;font-weight:900;font-stretch:125%;line-height:.8;letter-spacing:-.02em;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(242,238,232,.35)}
+.p-copy{position:absolute;left:0;right:0;bottom:0;padding:18svh 6vw 9svh;z-index:3;background:linear-gradient(transparent,#0c0b0acc 55%)}
+.p-copy .k{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;color:var(--ac);text-transform:none}
+.p-copy .t{font-size:clamp(22px,4.4vw,52px);font-weight:900;line-height:1.15;margin-top:10px;max-width:14em}
+.ln{overflow:hidden;display:block}.ln>span{display:block}
+.hint{position:absolute;right:6vw;bottom:3svh;font:11px 'JetBrains Mono',monospace;letter-spacing:.3em;color:var(--mu);z-index:3}
+.hint::after{content:"";display:block;width:1px;height:28px;background:var(--mu);margin:8px auto 0;animation:drip 1.6s cubic-bezier(.16,1,.3,1) infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.mani{padding:22svh 6vw 14svh}.mani p{font-weight:900;font-size:clamp(44px,11vw,150px);line-height:1;letter-spacing:-.02em}
+.mani p em{font-style:normal;color:var(--ac)}.mani .ln>span{transform:translateY(105%)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #ffffff1c;margin:0 6vw}
+.st{padding:34px 0 40px;border-bottom:1px solid #ffffff1c}.st b{display:block;font-family:'Archivo';font-stretch:125%;font-weight:900;font-size:clamp(46px,7vw,110px);line-height:1}
+.st i{font-style:normal;color:var(--mu);font-size:14px}
+.lab{font:12px 'JetBrains Mono',monospace;letter-spacing:.25em;color:var(--ac);padding:0 6vw}
+.hz{height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:5svh}
+.hz h2{font-weight:900;font-size:clamp(34px,6vw,84px);padding:0 6vw;line-height:1}
+.track{display:flex;gap:5vw;padding:0 6vw;width:max-content;will-change:transform}
+.pn{width:min(78vw,520px)}.pn-im{aspect-ratio:4/3;overflow:hidden;border-radius:4px}.pn-im img{width:100%;height:100%;object-fit:cover;transform:scale(1.15);transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.pn:hover .pn-im img{transform:scale(1.02)}
+.pn small{display:block;margin-top:16px;font:12px 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--ac)}.pn h3{font-family:'Archivo';font-stretch:125%;font-weight:900;font-size:clamp(26px,3vw,40px);margin:6px 0}
+.pn p{color:var(--mu);max-width:30em}
+.sto{position:relative;height:110svh;display:flex;align-items:flex-end;overflow:hidden}
+.sto-im{position:absolute;inset:0;clip-path:inset(18% 14% 18% 14%);will-change:clip-path}.sto-im img{width:100%;height:120%;object-fit:cover;transform:translateY(-8%)}
+.sto-im::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,#0c0b0aee)}
+.sto-tx{position:relative;padding:0 6vw 12svh;max-width:760px}.sto-tx span{font-family:'Archivo';font-stretch:125%;font-weight:900;font-size:clamp(70px,12vw,170px);color:transparent;-webkit-text-stroke:1.5px var(--ac);line-height:.9}
+.sto-tx h3{font-weight:900;font-size:clamp(28px,4vw,54px);margin:8px 0 10px}.sto-tx p{color:#cfc9c2;font-size:17px;line-height:1.6}
+.cardsec{padding:20svh 6vw 16svh;text-align:center}.cardsec h2{font-weight:900;font-size:clamp(34px,7vw,96px);line-height:1.05;margin-bottom:7svh}.cardsec h2 em{font-style:normal;color:var(--ac)}
+.ncard .front{background:linear-gradient(135deg,#1a1715,#2b140b 70%,#3a1708);color:var(--fg);border:1px solid #ffffff22}.nc-chip{background:linear-gradient(135deg,#e8c98a,#8a6a2a)}.nc-logo{color:var(--ac)}
+.ncard .back{background:#141210;border:1px solid #ffffff22}.ncard .back a{background:#ffffff0d;color:var(--fg)}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:8svh;padding:20px 38px;border-radius:999px;background:var(--ac);color:#0c0b0a;text-decoration:none;font-weight:900;font-size:17px}
+footer{padding:6svh 6vw;color:var(--mu);font-size:12px;display:flex;justify-content:space-between;border-top:1px solid #ffffff14}
+@media (max-width:760px){.stats{grid-template-columns:1fr 1fr}.st{padding:26px 0 30px}.sto{height:95svh}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}</style></head><body>
+<section class="portal" id="portal" aria-label="Kysont Tan">
+  <div class="p-img" id="pimg"><img src="assets/hero.webp" alt="Kysont Tan"></div>
+  <div class="p-mask" id="pmask"><h1 id="pword"><span id="pk">K</span>YSONT</h1></div><div class="p-out" id="pout" aria-hidden="true"><div class="ow">KYSONT</div></div>
+  <div class="p-copy"><span class="ln"><span class="k">Co-Founder · 1% AI Labs</span></span><span class="ln"><span class="t">18 年，把新科技变成真生意。</span></span></div>
+  <div class="hint" id="hint">SCROLL</div>
+</section>
+<section class="mani" aria-label="manifesto"><p><span class="ln"><span>18 年。</span></span><span class="ln"><span>把新科技</span></span><span class="ln"><span>变成<em>真生意。</em></span></span></p></section>
+<div class="stats"><div class="st"><b><span data-count="18">0</span></b><i>年科技 · 销售 · 金融</i></div><div class="st"><b><span data-count="14">0</span></b><i>家公司在用我们的系统</i></div><div class="st"><b><span data-count="1000">0</span>+</b><i>位学员</i></div><div class="st"><b><span data-count="3000">0</span>+</b><i>条 AI 视频</i></div></div>
+<section class="hz" id="hz"><h2>我现在在做</h2><div class="track" id="track"><article class="pn"><div class="pn-im"><img src="assets/office.webp" alt="1% AI Labs"></div><small>联合创始人</small><h3>1% AI Labs</h3><p>为中小企业做 AI 系统、AI 视频和自动化。</p></article><article class="pn"><div class="pn-im"><img src="assets/film.webp" alt="AvaEra"></div><small>技术合伙人</small><h3>AvaEra</h3><p>从零打造并上线整个 AvaEra 平台。</p></article><article class="pn"><div class="pn-im"><img src="assets/teach.webp" alt="BE'OLE Academy"></div><small>AI 课程讲师</small><h3>BE'OLE Academy</h3><p>教 AI 真人视频制作。</p></article><article class="pn"><div class="pn-im"><img src="assets/stage.webp" alt="1% Better Club"></div><small>联合创始人</small><h3>1% Better Club</h3><p>马来西亚创业者社群，一起把生意做大。</p></article></div></section>
+<p class="lab" style="padding-top:12svh">成功案例 · SUCCESS STORIES</p>
+<section class="sto"><div class="sto-im"><img src="assets/story_stage.webp" alt="2011 销售冠军"></div><div class="sto-tx"><span>01</span><h3>2011 销售冠军</h3><p>iSolution · 面对面销售银行金融产品，拿下第一名。</p></div></section><section class="sto"><div class="sto-im"><img src="assets/story_kohai.webp" alt="Kohai Esports 首席运营官"></div><div class="sto-tx"><span>02</span><h3>Kohai Esports 首席运营官</h3><p>两年从项目总监升 COO，带 30 人团队，参与 IPO 前期筹备，募得 RM400 万。</p></div></section><section class="sto"><div class="sto-im"><img src="assets/story_avaera.webp" alt="一个月上线 AvaEra"></div><div class="sto-tx"><span>03</span><h3>一个月上线 AvaEra</h3><p>2026 年 9 月开工，10 月整个平台上线。</p></div></section>
+<section class="cardsec"><h2>碰一下，<br><em>就认识我。</em></h2><div class="ncard-wrap"><div class="ncard " id="ncard">
+  <div class="face front"><div class="nc-top"><span class="nc-logo">1%</span><span class="nc-chip"></span></div>
+    <div class="nc-name">KYSONT TAN</div><div class="nc-role">Co-Founder · 1% AI Labs</div><div class="nc-hint">TAP / CLICK TO FLIP ↻</div><div class="shine"></div></div>
+  <div class="face back"><div class="nc-name sm">KYSONT TAN</div>
+    <a href="https://wa.me/60122708263">WhatsApp</a><a href="tel:+60122708263">Call · 电话</a><a href="mailto:kysont.tan@gmail.com">Email</a><a href="assets/kysont.vcf" download>Save contact · 保存联系方式</a><div class="shine"></div></div>
+</div></div>
+<a class="cta" id="cta" href="https://wa.me/60122708263">WhatsApp 我 →</a></section>
+<footer><span>© Kysont Tan</span><span>1% AI Labs</span></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script><script>
+gsap.registerPlugin(ScrollTrigger);
+const card=document.getElementById('ncard');
+function tilt(x,y){const r=card.getBoundingClientRect();const px=(x-r.left)/r.width-.5,py=(y-r.top)/r.height-.5;
+  card.style.setProperty('--rx',(-py*22)+'deg');card.style.setProperty('--ry',(px*26)+'deg');card.style.setProperty('--mx',(px+.5)*100+'%');card.style.setProperty('--my',(py+.5)*100+'%');}
+card.addEventListener('pointermove',e=>tilt(e.clientX,e.clientY));
+card.addEventListener('pointerleave',()=>{card.style.setProperty('--rx','0deg');card.style.setProperty('--ry','0deg')});
+card.addEventListener('touchmove',e=>{const t=e.touches[0];tilt(t.clientX,t.clientY)},{passive:true});
+card.addEventListener('click',e=>{if(e.target.closest('a'))return;card.classList.toggle('flip')});
+document.querySelectorAll('[data-count]').forEach(el=>{const n=+el.dataset.count;const o={v:0};
+  gsap.to(o,{v:n,duration:2,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%'},onUpdate:()=>el.textContent=Math.round(o.v).toLocaleString()})});
+
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lenis=null;
+if(!REDUCE){lenis=new Lenis({lerp:.09,smoothWheel:true});lenis.on('scroll',ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);}
+const EXPO='expo.out';
+addEventListener('load',()=>ScrollTrigger.refresh());document.fonts&&document.fonts.ready.then(()=>ScrollTrigger.refresh());
+function magnet(el,k){if(!el)return;const xt=gsap.quickTo(el,'x',{duration:.5,ease:'power3'}),yt=gsap.quickTo(el,'y',{duration:.5,ease:'power3'});
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();xt((e.clientX-r.left-r.width/2)*k);yt((e.clientY-r.top-r.height/2)*k)});
+  el.addEventListener('pointerleave',()=>{xt(0);yt(0)});}
+
+const word=document.getElementById('pword'),mask=document.getElementById('pmask'),pimg=document.querySelector('#pimg img');
+function fit(){word.style.fontSize='100px';const w=word.getBoundingClientRect().width;word.style.fontSize=(100*innerWidth*.9/w)+'px';document.querySelector('#pout .ow').style.fontSize=word.style.fontSize;
+  const k=document.getElementById('pk').getBoundingClientRect();gsap.set([mask,'#pout'],{transformOrigin:(k.left+k.width*.16)+'px '+(k.top+k.height*.55)+'px'});}
+fit();document.fonts.ready.then(()=>{fit();ScrollTrigger.refresh()});addEventListener('resize',()=>{fit();ScrollTrigger.refresh()});
+// load choreography
+const intro=gsap.timeline({defaults:{ease:EXPO}});
+intro.from([word,'#pout .ow'],{yPercent:40,opacity:0,duration:1.4}).to(pimg,{scale:1.12,duration:2},0)
+     .from('.p-copy .ln>span',{yPercent:110,duration:1.1,stagger:.12},.5).from('#hint',{opacity:0,duration:1},1);
+// SIGNATURE: fly through the K into the photo
+if(!REDUCE){
+ const tl=gsap.timeline({scrollTrigger:{trigger:'#portal',start:'top top',end:'+=170%',pin:true,scrub:1,anticipatePin:1}});
+ tl.to([mask,'#pout'],{scale:70,ease:'power3.in',duration:1})
+   .to(pimg,{scale:1,ease:'power2.out',duration:1},0)
+   .to('#hint',{opacity:0,duration:.2},0)
+   .set([mask,'#pout'],{opacity:0})
+   .fromTo('.p-copy .ln>span',{yPercent:0},{yPercent:0,duration:.4});
+}
+// pointer + touch parallax on the hero
+const px=gsap.quickTo('#pimg','x',{duration:.8,ease:'power3'}),py=gsap.quickTo('#pimg','y',{duration:.8,ease:'power3'});
+function par(x,y){px((x/innerWidth-.5)*-30);py((y/innerHeight-.5)*-30)}
+addEventListener('pointermove',e=>par(e.clientX,e.clientY));addEventListener('touchmove',e=>{const t=e.touches[0];par(t.clientX,t.clientY)},{passive:true});
+// manifesto line reveals
+gsap.to('.mani .ln>span',{yPercent:0,duration:1.2,ease:EXPO,stagger:.12,scrollTrigger:{trigger:'.mani',start:'top 70%'}});
+// stats stagger
+gsap.from('.st',{y:60,opacity:0,duration:1,ease:EXPO,stagger:.08,scrollTrigger:{trigger:'.stats',start:'top 80%'}});
+// pinned horizontal track with velocity skew
+const track=document.getElementById('track');
+const hzT=gsap.to(track,{x:()=>-(track.scrollWidth-innerWidth),ease:'none',scrollTrigger:{trigger:'#hz',start:'top top',end:()=>'+='+(track.scrollWidth-innerWidth),pin:true,scrub:1,invalidateOnRefresh:true,
+  onUpdate:s=>gsap.to('.pn',{skewX:gsap.utils.clamp(-8,8,s.getVelocity()/-300),duration:.4,overwrite:true})}});
+// stories: window opens as you scroll
+document.querySelectorAll('.sto').forEach(s=>{
+  gsap.to(s.querySelector('.sto-im'),{clipPath:'inset(0% 0% 0% 0%)',ease:'none',scrollTrigger:{trigger:s,start:'top 85%',end:'top 15%',scrub:true}});
+  gsap.to(s.querySelector('img'),{yPercent:8,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.from(s.querySelectorAll('.sto-tx>*'),{y:50,opacity:0,duration:1.1,ease:EXPO,stagger:.1,scrollTrigger:{trigger:s,start:'top 40%'}});
+});
+gsap.from('.cardsec h2',{y:80,opacity:0,duration:1.2,ease:EXPO,scrollTrigger:{trigger:'.cardsec',start:'top 70%'}});
+gsap.from('.ncard-wrap',{y:120,rotateX:40,opacity:0,duration:1.4,ease:EXPO,scrollTrigger:{trigger:'.cardsec',start:'top 55%'}});
+magnet(document.getElementById('cta'),.35);
+</script></body></html>
